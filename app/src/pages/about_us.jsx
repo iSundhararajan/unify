@@ -1,4 +1,4 @@
-// create page that talkes about what our platform does
+// create page that talks about what our platform does
 
 import { Box, Heading, Text, VStack, Link } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
@@ -13,8 +13,8 @@ export default function About() {
         <Box>
           <Heading mb={2}> Who we are?</Heading>
           <Text>
-            At Unify, we believe that when people come together, magic can happen(ok, we don't mean that literally!).
-          But we believe that we can make the world a better place. In order to achieve this, we need everyone to come together to help out. 
+          At Unify, we believe that when people come together, magic can happen(ok, we don't mean that literally!).
+          But we believe that we can make the world a better place. 
           </Text>
         </Box>
           
