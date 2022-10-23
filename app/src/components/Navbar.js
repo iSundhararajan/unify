@@ -37,9 +37,7 @@ const NavLink = ({ text, href }) => (
 
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [openModal, setModalOpen] = useState(false)
-
-
+    const [openModal, setModalOpen] = useState(false);
 
     const { logout, user } = useAuth();
 
@@ -59,7 +57,11 @@ export default function Navbar() {
 
     return (
         <>
-            <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} fontFamily={"Poppins"}>
+            <Box
+                bg={useColorModeValue("gray.100", "gray.900")}
+                px={4}
+                fontFamily={"Poppins"}
+            >
                 <CreateNewCampaign open={openModal} setOpen={setModalOpen} />
                 <Flex
                     h={16}
@@ -83,6 +85,12 @@ export default function Navbar() {
                             <NavLink text={"Home"} href={"/"} />
                             <NavLink text={"About Us"} href={"/about"} />
                             <NavLink text={"Feed"} href={"/feed"} />
+                            <NavLink
+                                text={"Talk to Unify Bot"}
+                                href={
+                                    "https://weresolver.vinamrasharma.com/index.php/10-2/"
+                                }
+                            />
                         </HStack>
                     </HStack>
                     <Flex alignItems={"center"}>

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <Feed />
     },
     {
-        path:'discussion',
+        path:'discussion/:id',
         element: <FeedDiscussion />
     }
 

@@ -3,51 +3,14 @@ import {
     Heading,
     Link,
     Image,
-    Text,
-    HStack,
-    Tag,
-    useColorModeValue,
     Container,
     Flex,
     chakra,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { nanoid } from "nanoid";
-
-const BlogTags = (props) => {
-    return (
-        <HStack spacing={2} marginTop={props.marginTop}>
-            {props.tags.map((tag) => {
-                return (
-                    <Tag
-                        size={"md"}
-                        variant="solid"
-                        colorScheme="orange"
-                        key={tag}
-                    >
-                        {tag}
-                    </Tag>
-                );
-            })}
-        </HStack>
-    );
-};
-
-export const BlogAuthor = (props) => {
-    return (
-        <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
-            <Image
-                borderRadius="full"
-                boxSize="40px"
-                src="https://100k-faces.glitch.me/random-image"
-                alt={`Avatar of ${props.name}`}
-            />
-            <Text fontWeight="medium">{props.name}</Text>
-            <Text>—</Text>
-            <Text>{props.date.toLocaleDateString()}</Text>
-        </HStack>
-    );
-};
+import axios from "axios"
+import { useState, useEffect } from "react"
 
 // Just copy the object part downwards and add new values
 // something like this
@@ -102,15 +65,48 @@ const FeedsArr = [
         userImageLink:
             "https://tl.vhv.rs/dpng/s/436-4369151_gofundme-logo-png-transparent-png.png",
     },
+    {
+    id: nanoid(),
+    title: "The Small World",
+    description: `The Small Worlds mission is to empower girls, women and communities in the Himalayan regions of Nepal. The organization supports girls from small, remote communities to provide girls resources and support they need to complete their education. Every year, the Girls Dorm for Higher Education in Salleri, Nepal serves 40 girls in grades 11 and 12. The girls come from some of the most remote villages in Nepal's Solukhumbu region and travel to reside at the dorm to access these grade levels of school, which are unavailable in their home villages. In the areas we work, up to seven out of 10 girls drop out of school after the 10th grade. The dorm provides a safe space for the girls to live and learn together. In addition to their traditional education, girls residing at the dorm take extra classes, such as computer education, to prepare them for potential employment in the future.`,
+    authorName: 'GoFundMe',
+    authorId: nanoid(12),
+    createdAt: 'Oct 23, 2022',
+    imageLink: "https://www.letsroam.com/explorer/wp-content/uploads/sites/10/2021/09/Charity-Event-Ideas.jpg",
+    userImageLink: "https://tl.vhv.rs/dpng/s/436-4369151_gofundme-logo-png-transparent-png.png",
+     },
+     {
+        id: nanoid(),
+        title: "Dhammajarinee Witthaya School",
+        description: `Since 1993, the Dhammarjinee Witthaya School (DWS) has offered a safe and loving home with quality education to over 4,000 underserved Thai girls, including orphans, refugees, and those suffering from abuse and impoverishment. In addition to receiving a formal education, students gain vocational, sustainability, and personal development skills. Over 90% of graduates attend college—ending the cycle of poverty and a lack of opportunity for themselves and their families.
+        `,
+        authorName: 'GoFundMe',
+        authorId: nanoid(12),
+        createdAt: 'Oct 23, 2022',
+        imageLink: "https://static.wixstatic.com/media/ceb78f_715b13d5c76e4450ae437cc250d397f0~mv2.jpg/v1/fill/w_454,h_341,fp_0.50_0.50,q_90,enc_auto/ceb78f_715b13d5c76e4450ae437cc250d397f0~mv2.jpg",
+        userImageLink: "https://tl.vhv.rs/dpng/s/436-4369151_gofundme-logo-png-transparent-png.png",
+         }
 ];
 
 const Feed = () => {
+    const [data, setData] = useState(FeedsArr)
+    const getData = async() => {
+        let resp = await axios.get("https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/list")
+        setData(resp.data)
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
+
+    console.log(data)
+
     return (
         <>
             <Navbar />
             <Container maxW={"5xl"} p="12" fontFamily={"Poppins"}>
                 <Heading as="h1">Active Global Campaigns</Heading>
-                {FeedsArr.map((item) => (
+                {data.map((item) => (
                     <FeedItem2 data={item} key={item.id} />
                 ))}
             </Container>
@@ -118,7 +114,9 @@ const Feed = () => {
     );
 };
 
-const FeedItem2 = ({ data }) => (
+const FeedItem2 = ({ data }) => {
+    let imageLink = "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+    return (
     <Flex
         bg="#edf3f8"
         _dark={{
@@ -151,20 +149,6 @@ const FeedItem2 = ({ data }) => (
                 >
                     {data?.createdAt}
                 </chakra.span>
-                <Link
-                    px={3}
-                    py={1}
-                    bg="gray.600"
-                    color="gray.100"
-                    fontSize="sm"
-                    fontWeight="700"
-                    rounded="md"
-                    _hover={{
-                        bg: "gray.500",
-                    }}
-                >
-                    Link
-                </Link>
             </Flex>
 
             <Box mt={2}>
@@ -200,7 +184,7 @@ const FeedItem2 = ({ data }) => (
                 w="full"
                 h={64}
                 fit="cover"
-                src={data?.imageLink}
+                src={data?.imageLink || imageLink}
                 alt="Article"
             />
 
@@ -213,7 +197,7 @@ const FeedItem2 = ({ data }) => (
                     _hover={{
                         textDecor: "underline",
                     }}
-                    href={"/discussion"}
+                    href={`/discussion/${data?.id}`}
                 >
                     Join Discussion
                 </Link>
@@ -247,5 +231,5 @@ const FeedItem2 = ({ data }) => (
         </Box>
     </Flex>
 );
-
+}
 export default Feed;

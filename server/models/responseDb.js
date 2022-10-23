@@ -1,5 +1,4 @@
 import Sequelize from "sequelize-cockroachdb";
-import campaignModel from "./campaign.js";
 import responseModel from "./response.js";
 
 const Database_URL =
@@ -10,12 +9,11 @@ const sequelize = new Sequelize(Database_URL, {
     },
 });
 
-const db = {};
+const responseDB = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+responseDB.Sequelize = Sequelize;
+responseDB.sequelize = sequelize;
 
-db.campaigns = campaignModel(sequelize, Sequelize.DataTypes);
-db.responses = responseModel(sequelize, Sequelize.DataTypes);
+responseDB.responses = responseModel(sequelize, Sequelize.DataTypes);
 
-export default db;
+export default responseDB;

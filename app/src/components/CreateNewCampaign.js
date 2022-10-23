@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { nanoid } from "nanoid";
-import axios from "axios"
+import axios from "axios";
 
 function CreateNewCampaign({ open, setOpen }) {
     const toast = useToast();
@@ -24,6 +24,7 @@ function CreateNewCampaign({ open, setOpen }) {
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState("");
     const [loading, setLoading] = useState(false);
+    const [imageLink, setImageLink] = useState("https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80")
     const { user } = useAuth();
 
     const customToast = ({ title, status }) => {
@@ -44,12 +45,16 @@ function CreateNewCampaign({ open, setOpen }) {
                 title,
                 description,
                 tags,
+                imageLink,
                 authorId: user?.id,
                 authorName: user?.name,
                 uniqueId: nanoid(12),
-            }
+            };
             setLoading(true);
-            let resp = await axios.post('https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/create', info)
+            let resp = await axios.post(
+                "https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/create",
+                info
+            );
             console.log(resp.data);
             setLoading(false);
             customToast({
@@ -92,6 +97,13 @@ function CreateNewCampaign({ open, setOpen }) {
                                 placeholder="#war, #famine, #helpneeded"
                                 value={tags}
                                 onChange={(e) => setTags(e.target.value)}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Campaign Image Link</FormLabel>
+                            <Input
+                                value={imageLink}
+                                onChange={(e) => setImageLink(e.target.value)}
                             />
                         </FormControl>
                     </ModalBody>

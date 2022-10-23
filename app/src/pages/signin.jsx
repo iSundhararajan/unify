@@ -68,7 +68,7 @@ function LogIn() {
                         isClosable: true,
                         description: "You've successfully logged In",
                     });
-                    navigate("/home");
+                    navigate("/feed");
                 })
                 .catch((err) => {
                     setLoading(false)

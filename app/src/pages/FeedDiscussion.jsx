@@ -12,8 +12,67 @@ import {
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { TbBrandTelegram } from "react-icons/tb";
+import axios from "axios";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import { nanoid } from "nanoid";
 
 export default function FeedDiscussion() {
+    const [info, setInfo] = useState(null);
+    const [respText, setRespText] = useState("");
+    const params = useParams();
+    const { user } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [responses, setResponses] = useState([]);
+
+    let imageLink =
+        "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80";
+
+    const createNewResp = async () => {
+        if (!respText) {
+            return;
+        } else {
+            setLoading(true);
+            const respInfo = {
+                text: respText,
+                authorName: user?.name,
+                authorId: user?.id,
+                campaignId: params?.id,
+                uniqueId: nanoid(12),
+            };
+            let resp = await axios.post(
+                "https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/response/create",
+                respInfo
+            );
+            console.log(resp.data);
+            setRespText("");
+            setLoading(false);
+        }
+    };
+
+    const getInfo = async () => {
+        const resp = await axios.get(
+            `https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/detail/${params.id}`
+        );
+        setInfo(resp.data);
+    };
+
+    const fetchResponses = async () => {
+        const resp = await axios.get(
+            `https://5000-isundhararajan-unify-jnw7md09zl4.ws-eu72.gitpod.io/api/campaigns/response/list/${params.id}`
+        );
+        setResponses(resp.data);
+    };
+
+    useEffect(() => {
+        if (params) {
+            getInfo();
+            fetchResponses();
+        }
+    }, [params.id]);
+
     return (
         <>
             <Navbar />
@@ -43,7 +102,7 @@ export default function FeedDiscussion() {
                         w="full"
                         h={64}
                         fit="cover"
-                        src="https://static01.nyt.com/images/2016/09/18/opinion/18LschoolsWeb/18LschoolsWeb-superJumbo.jpg"
+                        src={info?.imageLink || imageLink}
                         alt="Article"
                     />
 
@@ -56,9 +115,7 @@ export default function FeedDiscussion() {
                                 _dark={{
                                     color: "brand.400",
                                 }}
-                            >
-                                
-                            </chakra.span>
+                            ></chakra.span>
                             <Link
                                 display="block"
                                 color="gray.800"
@@ -83,10 +140,7 @@ export default function FeedDiscussion() {
                                     color: "gray.400",
                                 }}
                             >
-                                Feel free to drop in your ideas over here or donate! Some current students are wheelchair users and can not get to and from school. If enough funds can be raised the school will purchase a van to provide transport. This would require at least $6000. Fingers crossed we can make this happen.
-                        
-
-Please consider donating to make a difference for the current and future students.
+                                {info?.description}
                             </chakra.p>
                         </Box>
 
@@ -98,7 +152,6 @@ Please consider donating to make a difference for the current and future student
                                     justifyContent={"center"}
                                 >
                                     <Flex alignItems="center">
-
                                         <Link
                                             mx={2}
                                             fontWeight="bold"
@@ -107,7 +160,7 @@ Please consider donating to make a difference for the current and future student
                                                 color: "gray.200",
                                             }}
                                         >
-                                            by Yolande Archibald, Organizer
+                                            by {info?.authorName}, Organizer
                                         </Link>
                                     </Flex>
                                     <chakra.span
@@ -118,7 +171,9 @@ Please consider donating to make a difference for the current and future student
                                             color: "gray.300",
                                         }}
                                     >
-                                        Oct 23, 2022
+                                        {new Date(
+                                            info?.createdAt
+                                        ).toLocaleDateString()}
                                     </chakra.span>
                                 </Box>
                                 <Link
@@ -152,6 +207,8 @@ Please consider donating to make a difference for the current and future student
                                 placeholder={"Type your response ..."}
                                 aria-label={"Response"}
                                 w={"70%"}
+                                value={respText}
+                                onChange={(e) => setRespText(e.target.value)}
                             />
                             <Tooltip label={"Send"} hasArrow placement="top">
                                 <IconButton
@@ -159,12 +216,28 @@ Please consider donating to make a difference for the current and future student
                                     size={"md"}
                                     isRound
                                     colorScheme={"green"}
+                                    // isLoading={loading}
+                                    onClick={createNewResp}
+                                    // disabled={loading}
                                 />
                             </Tooltip>
                         </Stack>
-                        {[...Array(4)].map((_, i) => (
-                            <ResponseItem key={i} />
-                        ))}
+                        {responses?.length > 0 ? (
+                            responses.map((item, i) => (
+                                <ResponseItem key={i} item={item} />
+                            ))
+                        ) : (
+                            <chakra.p
+                                mt={2}
+                                fontSize="sm"
+                                color="gray.600"
+                                _dark={{
+                                    color: "gray.400",
+                                }}
+                            >
+                                {"No New Responses yet!"}
+                            </chakra.p>
+                        )}
                     </Box>
                 </Box>
             </Flex>
@@ -172,51 +245,71 @@ Please consider donating to make a difference for the current and future student
     );
 }
 
-const ResponseItem = () => (
-    <Box mt={5} ml={4} boxShadow={"lg"} w={"70%"} rounded={"lg"} borderColor={'gray.200'} p={4} >
-        <Flex alignItems="center">
+const ResponseItem = ({ item }) => {
+    let dummyName = "Riley Davies";
+    function getImgUrl(name) {
+        if (name) {
+            return `https://avatars.dicebear.com/api/adventurer/${name
+                .toLowerCase()
+                .replaceAll(" ", "")}.svg`;
+        } else {
+            return `https://avatars.dicebear.com/api/adventurer/${dummyName
+                .toLowerCase()
+                .replaceAll(" ", "")}.svg`;
+        }
+    }
+    return (
+        <Box
+            mt={5}
+            ml={4}
+            boxShadow={"lg"}
+            w={"70%"}
+            rounded={"lg"}
+            borderColor={"gray.200"}
+            p={4}
+        >
             <Flex alignItems="center">
-                <Image
-                    h={8}
-                    fit="cover"
-                    rounded="full"
-                    src={
-                        "https://images.unsplash.com/photo-1586287011575-a23134f797f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=48&q=60"
-                    }
-                    alt="Avatar"
-                />
-                <Link
-                    mx={2}
-                    fontWeight="bold"
-                    color="gray.700"
+                <Flex alignItems="center">
+                    <Image
+                        h={8}
+                        fit="cover"
+                        rounded="full"
+                        src={getImgUrl(item?.authorName)}
+                        alt="Avatar"
+                    />
+                    <Link
+                        mx={2}
+                        fontWeight="bold"
+                        color="gray.700"
+                        _dark={{
+                            color: "gray.200",
+                        }}
+                        fontSize={"sm"}
+                    >
+                        {item?.authorName || dummyName}
+                    </Link>
+                </Flex>
+                <chakra.span
+                    mx={1}
+                    fontSize="sm"
+                    color="gray.600"
                     _dark={{
-                        color: "gray.200",
+                        color: "gray.300",
                     }}
-                    fontSize={"sm"}
                 >
-                    {"Riley Davies"}
-                </Link>
+                    {new Date(item?.createdAt).toLocaleDateString()}
+                </chakra.span>
             </Flex>
-            <chakra.span
-                mx={1}
+            <chakra.p
+                mt={2}
                 fontSize="sm"
                 color="gray.600"
                 _dark={{
-                    color: "gray.300",
+                    color: "gray.400",
                 }}
             >
-                15 min ago
-            </chakra.span>
-        </Flex>
-        <chakra.p
-            mt={2}
-            fontSize="sm"
-            color="gray.600"
-            _dark={{
-                color: "gray.400",
-            }}
-        >
-            Just donated! Praying that these kids get all the love and support they deserve.
-        </chakra.p>
-    </Box>
-);
+                {item?.text}
+            </chakra.p>
+        </Box>
+    );
+};

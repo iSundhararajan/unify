@@ -1,19 +1,11 @@
-export default function campaignModel(sequelize, DataTypes){
-    const Campaign = sequelize.define("campaign", {
+export default function responseModel(sequelize, DataTypes){
+    const Response = sequelize.define("response", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: DataTypes.STRING(1234),
-            allowNull: false,
-        },
-        tags: {
+        text: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -26,9 +18,9 @@ export default function campaignModel(sequelize, DataTypes){
             type: DataTypes.STRING,
             allowNull: false,
         },
-        imageLink: {
+        campaignId: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         uniqueId: {
             type: DataTypes.STRING,
@@ -38,8 +30,7 @@ export default function campaignModel(sequelize, DataTypes){
             type: DataTypes.DATE,
             default: DataTypes.NOW,
         }
-        
     })
 
-    return Campaign
+    return Response
 }
