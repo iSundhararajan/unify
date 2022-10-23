@@ -17,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 import useAuth from "../hooks/useAuth";
+import { useState } from "react";
+import CreateNewCampaign from "./CreateNewCampaign";
 
 const NavLink = ({ text, href }) => (
     <Link
@@ -35,6 +37,9 @@ const NavLink = ({ text, href }) => (
 
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [openModal, setModalOpen] = useState(false)
+
+
 
     const { logout, user } = useAuth();
 
@@ -55,6 +60,7 @@ export default function Navbar() {
     return (
         <>
             <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} fontFamily={"Poppins"}>
+                <CreateNewCampaign open={openModal} setOpen={setModalOpen} />
                 <Flex
                     h={16}
                     alignItems={"center"}
@@ -86,6 +92,7 @@ export default function Navbar() {
                             size={"sm"}
                             mr={4}
                             leftIcon={<AddIcon />}
+                            onClick={() => setModalOpen(true)}
                         >
                             Create New Campaign
                         </Button>

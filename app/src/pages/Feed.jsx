@@ -12,6 +12,7 @@ import {
     chakra,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
+import { nanoid } from "nanoid";
 
 const BlogTags = (props) => {
     return (
@@ -48,96 +49,76 @@ export const BlogAuthor = (props) => {
     );
 };
 
+// Just copy the object part downwards and add new values
+// something like this
+
+/**
+ *  {
+ *  id: nanoid(),
+ * title: "New Title",
+ * description: `
+ * New desc
+ * `,
+ * authorName: 'New AuthorName',
+ * authorId: nanoid(12),
+ * createdAt: 'New Date',
+ * imageLink: "imageLink",
+ * userImageLink: "userImageLink",
+ * }
+ */
+
+const FeedsArr = [
+    {
+        id: nanoid(12),
+        title: "New Beginnings Disability School, Nairobi, Kenya",
+        description: `
+        New Beginnings Disability School is in Kibera and provides a
+        vital service to disabled people living in the area. This
+        slum in Nairobi is the biggest on the African continent with
+        an estimated population of over 1 million people. The New
+        Beginnings Disabilty School currently is just one room with
+        little to no resources. Networks for Voluntary Services
+        Kenya (NVS), the preferred volunteer organisation in the
+        region, partners with the school to provide volunteer
+        placements to help the solo teacher with her handful of
+        students, but there are hundreds of disabled students
+        waitlisted to attend. There is room to expand the school and
+        take in more students but currently the school cannot
+        support an increase in pupils without your help. Donations
+        will help to pay the facility's rent, school lunches, Kenyan
+        staff salaries, educational materials, cleaning supplies,
+        community outing costs, and semi-regular wheelchair
+        maintenance. All of the supplies and food are purchased in
+        the neighborhood and every penny that goes into New
+        Beginnings supports the Kenyan students, staff and Kibera
+        neighbourhood. 100% of donations will be given directly to
+        the school.
+        `,
+        authorName: "GoFundMe",
+        authorId: nanoid(12),
+        createdAt: "Oct 23, 2022",
+        imageLink:
+            "https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80",
+        userImageLink:
+            "https://tl.vhv.rs/dpng/s/436-4369151_gofundme-logo-png-transparent-png.png",
+    },
+];
+
 const Feed = () => {
     return (
         <>
             <Navbar />
-            <Container maxW={"5xl"} p="12"  fontFamily={"Poppins"}>
+            <Container maxW={"5xl"} p="12" fontFamily={"Poppins"}>
                 <Heading as="h1">Active Global Campaigns</Heading>
-                {[...Array(5)].map((_, i) => (
-                    <FeedItem2 key={i} />
+                {FeedsArr.map((item) => (
+                    <FeedItem2 data={item} key={item.id} />
                 ))}
             </Container>
         </>
     );
 };
 
-const FeedItem = () => (
-    <Box
-        marginTop={{ base: "1", sm: "5" }}
-        display="flex"
-        flexDirection={{ base: "column", sm: "row" }}
-        justifyContent="space-between"
-    >
-        <Box
-            display="flex"
-            flex="1"
-            marginRight="3"
-            position="relative"
-            alignItems="center"
-        >
-            <Box
-                width={{ base: "100%", sm: "85%" }}
-                zIndex="2"
-                marginLeft={{ base: "0", sm: "5%" }}
-                marginTop="5%"
-            >
-                <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
-                    <Image
-                        borderRadius="lg"
-                        src={
-                            "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-                        }
-                        alt="some good alt text"
-                        objectFit="contain"
-                    />
-                </Link>
-            </Box>
-            <Box zIndex="1" width="100%" position="absolute" height="100%">
-                <Box
-                    bgGradient={useColorModeValue(
-                        "radial(orange.600 1px, transparent 1px)",
-                        "radial(orange.300 1px, transparent 1px)"
-                    )}
-                    backgroundSize="20px 20px"
-                    opacity="0.4"
-                    height="100%"
-                />
-            </Box>
-        </Box>
-        <Box
-            display="flex"
-            flex="1"
-            flexDirection="column"
-            justifyContent="center"
-            marginTop={{ base: "3", sm: "0" }}
-        >
-            <BlogTags tags={["Engineering", "Product"]} />
-            <Heading marginTop="1">
-                <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
-                    Blog article title
-                </Link>
-            </Heading>
-            <Text
-                as="p"
-                marginTop="2"
-                color={useColorModeValue("gray.700", "gray.200")}
-                fontSize="lg"
-            >
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
-            </Text>
-            <BlogAuthor
-                name="John Doe"
-                date={new Date("2021-04-06T19:01:27Z")}
-            />
-        </Box>
-    </Box>
-);
-
-const FeedItem2 = () => (
+const FeedItem2 = ({ data }) => (
     <Flex
         bg="#edf3f8"
         _dark={{
@@ -168,7 +149,7 @@ const FeedItem2 = () => (
                         color: "gray.400",
                     }}
                 >
-                    Mar 10, 2019
+                    {data?.createdAt}
                 </chakra.span>
                 <Link
                     px={3}
@@ -182,7 +163,7 @@ const FeedItem2 = () => (
                         bg: "gray.500",
                     }}
                 >
-                    Design
+                    Link
                 </Link>
             </Flex>
 
@@ -202,7 +183,7 @@ const FeedItem2 = () => (
                         textDecor: "underline",
                     }}
                 >
-                    Accessibility tools for designers and developers
+                    {data?.title}
                 </Link>
                 <chakra.p
                     mt={2}
@@ -211,12 +192,17 @@ const FeedItem2 = () => (
                         color: "gray.300",
                     }}
                 >
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Tempora expedita dicta totam aspernatur doloremque.
-                    Excepturi iste iusto eos enim reprehenderit nisi, accusamus
-                    delectus nihil quis facere in modi ratione libero!
+                    {data?.description}
                 </chakra.p>
             </Box>
+            <Image
+                roundedTop="lg"
+                w="full"
+                h={64}
+                fit="cover"
+                src={data?.imageLink}
+                alt="Article"
+            />
 
             <Flex justifyContent="space-between" alignItems="center" mt={4}>
                 <Link
@@ -243,7 +229,7 @@ const FeedItem2 = () => (
                             base: "none",
                             sm: "block",
                         }}
-                        src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=40&q=80"
+                        src={data?.userImageLink}
                         alt="avatar"
                     />
                     <Link
@@ -254,7 +240,7 @@ const FeedItem2 = () => (
                         fontWeight="700"
                         cursor="pointer"
                     >
-                        Khatab wedaa
+                        {data?.authorName}
                     </Link>
                 </Flex>
             </Flex>

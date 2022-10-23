@@ -28,6 +28,7 @@ export default function About() {
         </Box>
           
         <Box>
+          
           <Heading mb={2}>
             Anything else?
           </Heading>

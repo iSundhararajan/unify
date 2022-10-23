@@ -43,7 +43,7 @@ export default function FeedDiscussion() {
                         w="full"
                         h={64}
                         fit="cover"
-                        src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                        src="https://static01.nyt.com/images/2016/09/18/opinion/18LschoolsWeb/18LschoolsWeb-superJumbo.jpg"
                         alt="Article"
                     />
 
@@ -57,7 +57,7 @@ export default function FeedDiscussion() {
                                     color: "brand.400",
                                 }}
                             >
-                                Product
+                                
                             </chakra.span>
                             <Link
                                 display="block"
@@ -73,7 +73,7 @@ export default function FeedDiscussion() {
                                     textDecor: "underline",
                                 }}
                             >
-                                I Built A Successful Blog In One Year
+                                Thanks for joining the discussion!
                             </Link>
                             <chakra.p
                                 mt={2}
@@ -83,11 +83,10 @@ export default function FeedDiscussion() {
                                     color: "gray.400",
                                 }}
                             >
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Molestie parturient et sem
-                                ipsum volutpat vel. Natoque sem et aliquam
-                                mauris egestas quam volutpat viverra. In pretium
-                                nec senectus erat. Et malesuada lobortis.
+                                Feel free to drop in your ideas over here or donate! Some current students are wheelchair users and can not get to and from school. If enough funds can be raised the school will purchase a van to provide transport. This would require at least $6000. Fingers crossed we can make this happen.
+                        
+
+Please consider donating to make a difference for the current and future students.
                             </chakra.p>
                         </Box>
 
@@ -99,13 +98,7 @@ export default function FeedDiscussion() {
                                     justifyContent={"center"}
                                 >
                                     <Flex alignItems="center">
-                                        <Image
-                                            h={10}
-                                            fit="cover"
-                                            rounded="full"
-                                            src="https://images.unsplash.com/photo-1586287011575-a23134f797f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=48&q=60"
-                                            alt="Avatar"
-                                        />
+
                                         <Link
                                             mx={2}
                                             fontWeight="bold"
@@ -114,7 +107,7 @@ export default function FeedDiscussion() {
                                                 color: "gray.200",
                                             }}
                                         >
-                                            Jone Doe
+                                            by Yolande Archibald, Organizer
                                         </Link>
                                     </Flex>
                                     <chakra.span
@@ -125,7 +118,7 @@ export default function FeedDiscussion() {
                                             color: "gray.300",
                                         }}
                                     >
-                                        21 SEP 2015
+                                        Oct 23, 2022
                                     </chakra.span>
                                 </Box>
                                 <Link
@@ -212,7 +205,7 @@ const ResponseItem = () => (
                     color: "gray.300",
                 }}
             >
-                5 min ago
+                15 min ago
             </chakra.span>
         </Flex>
         <chakra.p
@@ -223,8 +216,7 @@ const ResponseItem = () => (
                 color: "gray.400",
             }}
         >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Molestie
-            parturient et sem ipsum volutpat vel.
+            Just donated! Praying that these kids get all the love and support they deserve.
         </chakra.p>
     </Box>
 );
