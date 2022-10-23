@@ -15,7 +15,7 @@ export default function Home() {
     return (
         <>
             <Navbar />
-            <Container maxW={"3xl"}>
+            <Container maxW={"3xl"}  fontFamily={"Poppins"}>
                 <Stack
                     as={Box}
                     textAlign={"center"}

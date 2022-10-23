@@ -83,7 +83,9 @@ function LogIn() {
         }
     };
     return (
-        <div className="relative">
+        <div className="relative" style={{
+            fontFamily:"Poppins"
+        }} >
             <div className="z-10 mt-16 bg-secondary md:h-96 md:w-96 md:mt-16 md:ml-44 rounded-3xl"></div>
 
             <div className="z-20 p-4 m-8 origin-bottom-right transform border-4 border-tertiary lg:mx-56 md:mx-8 lg:-mt-80 rounded-2xl bg-blue-500">

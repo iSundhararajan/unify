@@ -9,7 +9,7 @@ export default function About() {
     <>
       <Navbar />
 
-      <VStack spacing={8} mx={"auto"} maxW={"xl"} py={12} px={6}>
+      <VStack spacing={8} mx={"auto"} maxW={"xl"} py={12} px={6} fontFamily={"Poppins"}>
         <Box>
           <Heading mb={2}> Who we are?</Heading>
           <Text>

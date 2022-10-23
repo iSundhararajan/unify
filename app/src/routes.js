@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router-dom"
 import About from "./pages/about_us"
+import Feed from "./pages/Feed"
 import Home from "./pages/Home"
 import Landing from "./pages/Landing"
 import Signin from "./pages/signin"
 import Signup from "./pages/signup"
+import FeedDiscussion from "./pages/FeedDiscussion"
 
 const router = createBrowserRouter([
     {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
         path:'/home',
         element: <Home />
     },
+    {
+        path:'/feed',
+        element: <Feed />
+    },
+    {
+        path:'discussion',
+        element: <FeedDiscussion />
+    }
 
 ])
 

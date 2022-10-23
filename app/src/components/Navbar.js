@@ -18,7 +18,6 @@ import {
 import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 import useAuth from "../hooks/useAuth";
 
-
 const NavLink = ({ text, href }) => (
     <Link
         px={2}
@@ -37,21 +36,25 @@ const NavLink = ({ text, href }) => (
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { logout, user } = useAuth()
+    const { logout, user } = useAuth();
 
-    let dummyName = "Riley Davies"
+    let dummyName = "Riley Davies";
 
-    function getImgUrl(name){
-        if (name){
-            return `https://avatars.dicebear.com/api/adventurer/${name.toLowerCase().replaceAll(" ","")}.svg`
+    function getImgUrl(name) {
+        if (name) {
+            return `https://avatars.dicebear.com/api/adventurer/${name
+                .toLowerCase()
+                .replaceAll(" ", "")}.svg`;
         } else {
-            return `https://avatars.dicebear.com/api/adventurer/${dummyName.toLowerCase().replaceAll(" ","")}.svg`
+            return `https://avatars.dicebear.com/api/adventurer/${dummyName
+                .toLowerCase()
+                .replaceAll(" ", "")}.svg`;
         }
     }
 
     return (
         <>
-            <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+            <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} fontFamily={"Poppins"}>
                 <Flex
                     h={16}
                     alignItems={"center"}
@@ -71,8 +74,9 @@ export default function Navbar() {
                             spacing={4}
                             display={{ base: "none", md: "flex" }}
                         >
-                           <NavLink text={"Home"} href={"/"} />
-                           <NavLink text={"About Us"} href={"/about"} />
+                            <NavLink text={"Home"} href={"/"} />
+                            <NavLink text={"About Us"} href={"/about"} />
+                            <NavLink text={"Feed"} href={"/feed"} />
                         </HStack>
                     </HStack>
                     <Flex alignItems={"center"}>
@@ -83,7 +87,7 @@ export default function Navbar() {
                             mr={4}
                             leftIcon={<AddIcon />}
                         >
-                            Action
+                            Create New Campaign
                         </Button>
                         <Menu>
                             <MenuButton
@@ -100,10 +104,14 @@ export default function Navbar() {
                                 />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>{user?.name || "Riley Davies"}</MenuItem>
-                                <MenuItem>{user?.email || "riley.davies@gmail.com"}</MenuItem>
+                                <MenuItem>
+                                    {user?.name || "Riley Davies"}
+                                </MenuItem>
+                                <MenuItem>
+                                    {user?.email || "riley.davies@gmail.com"}
+                                </MenuItem>
                                 <MenuDivider />
-                                <MenuItem onClick={logout} >Logout</MenuItem>
+                                <MenuItem onClick={logout}>Logout</MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>
@@ -112,13 +120,13 @@ export default function Navbar() {
                 {isOpen ? (
                     <Box pb={4} display={{ md: "none" }}>
                         <Stack as={"nav"} spacing={4}>
-                        <NavLink text={"Home"} href={"/"} />
-                           <NavLink text={"About Us"} href={"/about"} />
+                            <NavLink text={"Home"} href={"/"} />
+                            <NavLink text={"About Us"} href={"/about"} />
+                            <NavLink text={"Feed"} href={"/feed"} />
                         </Stack>
                     </Box>
                 ) : null}
             </Box>
-
         </>
     );
 }
